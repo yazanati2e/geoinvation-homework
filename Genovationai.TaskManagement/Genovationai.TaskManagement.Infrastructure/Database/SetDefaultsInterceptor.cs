@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Genovationai.TaskManagement.Infrastructure.Database;
-internal class SetDefaultsInterceptor : SaveChangesInterceptor
+public class SetDefaultsInterceptor : SaveChangesInterceptor
 {
     private readonly IActiveUserService _activeUserService;
     public SetDefaultsInterceptor(IActiveUserService activeUserService)

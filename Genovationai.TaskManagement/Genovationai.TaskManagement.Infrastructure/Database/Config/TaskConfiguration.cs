@@ -18,6 +18,9 @@ internal class TaskConfiguration : BaseEntityConfig, IEntityTypeConfiguration<Co
                 .IsRequired(false)
                 .HasMaxLength(10_000);
 
+        builder.Property(t => t.Status)
+        .IsRequired(true);
+
         builder.HasOne(t => t.AssignedTo)
                 .WithMany(tm => tm.Tasks);
     }

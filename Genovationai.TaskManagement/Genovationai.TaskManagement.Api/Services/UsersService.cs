@@ -5,11 +5,11 @@ using Genovationai.TaskManagement.Core.Entities;
 
 namespace Genovationai.TaskManagement.Api.Services;
 
-public class UserService : IUsersService
+public class UsersService : IUsersService
 {
     public IRepository<TeamMember> _userRepository;
 
-    public UserService(IRepository<TeamMember> userRepository)
+    public UsersService(IRepository<TeamMember> userRepository)
     {
         _userRepository = userRepository;
     }

@@ -15,6 +15,17 @@ public class Task : BaseEntity
 
     public int? AssignedToId { get; set; }
 
+    public TaskStatus Status { get; set; } = TaskStatus.NotStarted;
+
     public TeamMember? AssignedTo { get; set; }
+}
+
+public enum TaskStatus
+{
+    NotStarted,
+    InProgress,
+    Completed,
+    OnHold,
+    Cancelled
 }
 

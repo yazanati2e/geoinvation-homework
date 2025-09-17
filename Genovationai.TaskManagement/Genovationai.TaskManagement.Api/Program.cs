@@ -6,6 +6,7 @@ using Genovationai.TaskManagement.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -16,9 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IActiveUserService, ActiveUserService>();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<SetDefaultsInterceptor, SetDefaultsInterceptor>();
+
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{ 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.AddInterceptors(sp.GetServices<SetDefaultsInterceptor>());
+});
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

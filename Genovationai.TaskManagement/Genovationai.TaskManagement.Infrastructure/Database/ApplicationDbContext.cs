@@ -1,4 +1,5 @@
-﻿using Genovationai.TaskManagement.Core.Entities;
+﻿using Genovationai.TaskManagement.Core.Abstraction.Services;
+using Genovationai.TaskManagement.Core.Entities;
 using Genovationai.TaskManagement.Infrastructure.Security;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
     public DbSet<Task> Tasks => Set<Task>();
-
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
