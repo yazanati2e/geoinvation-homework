@@ -416,3 +416,26 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Node modules
+/node_modules
+
+# Distribution folder
+/dist
+
+# Compiled output
+/tmp
+/out-tsc
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Local environment variables
+.env
+
+# Logs
+*.log
+
+# Cache
+.angular/cache
