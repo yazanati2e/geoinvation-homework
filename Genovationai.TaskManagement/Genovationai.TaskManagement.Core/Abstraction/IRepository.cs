@@ -1,0 +1,14 @@
+﻿
+
+namespace Genovationai.TaskManagement.Core.Abstraction;
+
+public interface IRepository<TEntity> where TEntity : BaseEntity
+{
+    Task<TEntity?> GetByIdAsync(int id);
+    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task AddAsync(TEntity entity);
+    void Update(TEntity entity);
+    Task DeleteAsync(int id);
+    Task Save();
+}
+
