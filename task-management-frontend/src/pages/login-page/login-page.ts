@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from '../../common/auth-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -19,8 +20,8 @@ export class LoginPage {
   private router = inject(Router);
 
   loginForm = new FormGroup({
-    userName: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    userName: new FormControl('YAZAN.ATI@GENOVATION.AI', Validators.required),
+    password: new FormControl('P@ssw0rd', Validators.required),
   });
 
   error: string | null = null;
@@ -29,15 +30,24 @@ export class LoginPage {
     if (this.loginForm.valid) {
       const { userName, password } = this.loginForm.value;
 
-      this.authService.login(userName!, password!);
+      this.authService.login(userName!, password!).pipe(
+      tap((response: any) => {
+        if (response && response.token) {
+          localStorage.setItem('jwt_token', response.token);
 
-      this.authService.isLoggedIn().subscribe(isLoggedIn => {
-        if (isLoggedIn) {
+        }
+      })
+    ).subscribe(resp => {
+        if ((this.authService.isLoggedIn())) {
           this.router.navigate(['/']);
         } else {
           this.error = 'Invalid username or password.';
         }
       });
+
+      
+
+   
 
     } else {
       this.error = 'Please fill in all required fields.';

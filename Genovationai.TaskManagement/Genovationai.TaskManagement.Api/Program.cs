@@ -52,6 +52,18 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]?? throw new Exception("JWT value not found")))
     };
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CORSPolicy",
+                      b =>
+                      {
+                          b.WithOrigins(builder.Configuration["Frontends"].Split(',')) // Specify allowed origins
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod();
+                      });
+});
+
 builder.Services.AddAuthorization();
 
 
@@ -74,6 +86,8 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 await app.Services.SeedDefaultData();
+
+app.UseCors("CORSPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

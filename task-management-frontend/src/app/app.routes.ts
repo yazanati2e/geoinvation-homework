@@ -5,7 +5,7 @@ import { AuthGuard } from '../common/authGuard';
 
 export const routes: Routes = [
       { path: 'login', component: LoginPage },
-      { path: 'home', component: HomePage, canActivate: [AuthGuard] },
-      { path: '', redirectTo: '/home', pathMatch: 'full' }
+      { path: '', component: HomePage, canActivate: [AuthGuard] },
+      { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

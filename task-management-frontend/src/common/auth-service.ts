@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Environment } from '../environments/environment';
 import { Constants } from './contants';
 import { LoginModel } from './models/loginModel';
@@ -9,38 +9,29 @@ import { LoginModel } from './models/loginModel';
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = new BehaviorSubject<boolean>(false);
-  private http: HttpClient;
+    private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor() {
-    this.http = inject(HttpClient);
+  constructor(private http: HttpClient) {}
 
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      this.loggedIn.next(true);
-    }
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(`${Environment.apiUrl}/${Constants.AuthUrl}`, {username, password});
   }
 
-  login(username: string, password: string) {
-
-    this.http.post<LoginModel>(`${Environment.apiUrl}/${Constants.AuthUrl}`, { username, password })
-      .subscribe(response => {
-        if (response && response.token) {
-              localStorage.setItem('authToken', response.token);
-              this.loggedIn.next(true);
-        }
-      });
-
-
+  logout(): void {
+    localStorage.removeItem('jwt_token');
+    this.isAuthenticatedSubject.next(false);
   }
 
-  logout() {
-    localStorage.removeItem('authToken');
-    this.loggedIn.next(false);
+  getToken(): string | null {
+    return localStorage.getItem('jwt_token');
   }
 
-  isLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+  isLoggedIn(): boolean {
+    return this.hasToken();
   }
-  
+
+  private hasToken(): boolean {
+    return !!localStorage.getItem('jwt_token');
+  }
 }
