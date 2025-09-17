@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Genovationai.TaskManagement.Infrastructure.Database;
 
-internal class Repository<TEnitity> : IRepository<TEnitity> where TEnitity : BaseEntity
+public class Repository<TEnitity> : IRepository<TEnitity> where TEnitity : BaseEntity
 {
     private readonly ApplicationDbContext _context;
     private readonly DbSet<TEnitity> _dbSet;

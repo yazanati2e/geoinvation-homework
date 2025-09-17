@@ -1,5 +1,6 @@
 ﻿using Genovationai.TaskManagement.Api.Dtos;
 using Genovationai.TaskManagement.Core.Abstraction;
+using Genovationai.TaskManagement.Core.Abstraction.Services;
 using Genovationai.TaskManagement.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,20 +9,20 @@ namespace Genovationai.TaskManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Developer")]
     public class UsersController : ControllerBase
     {
-        public IRepository<TeamMember> _userRepository;
+        private readonly IUsersService _usersService;
 
-        public UsersController(IRepository<TeamMember> userRepository)
+        public UsersController(IUsersService usersService)
         {
-            _userRepository = userRepository;
+            _usersService = usersService;
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            var record = await _userRepository.GetByIdAsync(id);
+            var record = await _usersService.GetByIdAsync(id);
 
             if (record is null)
             {
@@ -34,7 +35,7 @@ namespace Genovationai.TaskManagement.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var records = await _userRepository.GetAllAsync();
+            var records = await _usersService.GetAllAsync();
 
             if (records is null || !records.Any())
             {
@@ -54,43 +55,35 @@ namespace Genovationai.TaskManagement.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateTeamMemberDto userDto)
         {
-            var user = new TeamMember
-            {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName
-            };
-            await _userRepository.AddAsync(user);
-            await _userRepository.Save();
+            var addedUserRecord = await _usersService.CreateAsync(new TeamMember() { FirstName = userDto.FirstName, LastName = userDto.LastName });
 
-            return CreatedAtAction(nameof(Get), new { id = user.Id }, new TeamMemberDto(user));
+
+            return CreatedAtAction(nameof(Get), new { id = addedUserRecord.Id }, new TeamMemberDto(addedUserRecord));
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] UpdateTeamMemberDto userDto)
         {
-            var existingUser = await _userRepository.GetByIdAsync(userDto.Id);
+            var existingUser = await _usersService.UpdateAsync(new TeamMember() {Id = userDto.Id, FirstName = userDto.FirstName, LastName = userDto.LastName });
             if (existingUser is null)
             {
                 return NotFound();
             }
-            existingUser.FirstName = userDto.FirstName;
-            existingUser.LastName = userDto.LastName;
-            _userRepository.Update(existingUser);
-            await _userRepository.Save();
+
+
             return Ok(new TeamMemberDto(existingUser));
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var existingUser = await _userRepository.GetByIdAsync(id);
-            if (existingUser is null)
+            bool success = await _usersService.DeleteAsync(id);
+            if(success)
             {
-                return NotFound();
+                return NoContent();
             }
-            await _userRepository.DeleteAsync(existingUser.Id);
-            await _userRepository.Save();
-            return NoContent();
+
+            return NotFound();
         }
     }
 }

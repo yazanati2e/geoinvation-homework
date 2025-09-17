@@ -1,4 +1,5 @@
 using Genovationai.TaskManagement.Api.Services;
+using Genovationai.TaskManagement.Core.Abstraction;
 using Genovationai.TaskManagement.Core.Abstraction.Services;
 using Genovationai.TaskManagement.Infrastructure.Database;
 using Genovationai.TaskManagement.Infrastructure.Security;
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IActiveUserService, ActiveUserService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
