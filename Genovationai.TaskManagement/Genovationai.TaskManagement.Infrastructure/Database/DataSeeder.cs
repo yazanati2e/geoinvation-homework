@@ -16,8 +16,7 @@ public static class DataSeeder
         {
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             await context.Database.EnsureCreatedAsync();
-            await context.Database.MigrateAsync();
-            await context.SaveChangesAsync();
+
 
             //Seed default roles if they don't exist
             string[] roleNames = { "Admin", "Developer" };
@@ -75,7 +74,8 @@ public static class DataSeeder
                     new Core.Entities.Task
                     {
                         Title = "Task 8",
-                        Description = "I am task 8 description"
+                        Description = "I am task 8 description",
+
                     }
                 };
             if (!await context.TeamMembers.AnyAsync())
