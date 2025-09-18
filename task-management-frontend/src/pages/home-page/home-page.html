@@ -4,23 +4,48 @@
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      <mat-cell *matCellDef="let userElement"> {{userElement.id}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="firstName">
       <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+      <mat-cell *matCellDef="let userElement"> {{userElement.firstName}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="lastName">
       <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+      <mat-cell *matCellDef="let userElement"> {{userElement.lastName}} </mat-cell>
     </ng-container>
 
 
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-header-row *matHeaderRowDef="userdisplayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: userdisplayedColumns;"></mat-row>
+  </mat-table>
+</div>
+
+  <div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="tasksDataSource">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let taskElement"> {{taskElement.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+      <mat-cell *matCellDef="let taskElement"> {{taskElement.title}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+      <mat-cell *matCellDef="let taskElement"> {{taskElement.description}} </mat-cell>
+    </ng-container>
+
+
+
+    <mat-header-row *matHeaderRowDef="tasksDisplayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let taskRow; columns: tasksDisplayedColumns;"></mat-row>
   </mat-table>
 </div>
 </div>

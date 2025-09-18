@@ -12,12 +12,19 @@ import { DataService } from './data-service';
 export class HomePage {
   private dataSerivce: DataService = inject(DataService);
   usersDataSource: any[] = [];
-    displayedColumns = ['id', 'firstName', 'lastName'];
+  userdisplayedColumns = ['id', 'firstName', 'lastName'];
+
+  tasksDataSource: any[] = [];
+  tasksDisplayedColumns = ['id', 'title', 'description'];
 
 
   constructor() {
     this.dataSerivce.getUsers().subscribe((data: any[]) => {
       this.usersDataSource = data
+    });
+
+    this.dataSerivce.getTasks().subscribe((data: any[]) => {
+      this.tasksDataSource = data
     });
   }
 }

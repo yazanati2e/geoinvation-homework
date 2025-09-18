@@ -22,7 +22,25 @@ namespace Genovationai.TaskManagement.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(record);
+            return Ok(new GetTaskDto(record));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var records = await _tasksService.GetAllAsync();
+            if (records is null || !records.Any())
+            {
+                return NotFound();
+            }
+
+            var tasks = new List<GetTaskDto>();
+
+            foreach(var task in records)
+            {
+                tasks.Add(new GetTaskDto(task));
+            }
+            return Ok(tasks);
         }
 
         [HttpPost]

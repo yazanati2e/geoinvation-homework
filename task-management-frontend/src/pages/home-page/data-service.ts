@@ -14,6 +14,10 @@ export class DataService {
     return this.http.get<any[]>(`${Environment.apiUrl}/${Constants.GetAllUsersUrl}`);
   }
 
-  
-  
+  getTasks() {
+    return this.http.get<any[]>(`${Environment.apiUrl}/${Constants.GetAllTasksUrl}`);
+  }
+
+
+
 }
