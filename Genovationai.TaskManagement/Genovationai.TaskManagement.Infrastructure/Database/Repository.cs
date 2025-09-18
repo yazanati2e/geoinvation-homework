@@ -41,9 +41,16 @@ public class Repository<TEnitity> : IRepository<TEnitity> where TEnitity : BaseE
         return _dbSet.Where(filterCondition).ToList();
     }
 
-    public async Task<TEnitity?> GetByIdAsync(int id)
+    public async Task<TEnitity?> GetByIdAsync(int id, string? includes = null)
     {
-        return await _dbSet.FindAsync(id);
+        var query = _dbSet.Where(e => e.Id == id);
+
+        if(!string.IsNullOrEmpty(includes))
+        {
+            query = query.Include(includes);
+        }
+
+        return await query.FirstOrDefaultAsync();
     }
 
     public void Update(TEnitity entity)

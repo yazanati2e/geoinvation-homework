@@ -20,12 +20,12 @@ public class Task : BaseEntity
     public TeamMember? AssignedTo { get; set; }
 }
 
-public enum TaskStatus
+public enum TaskStatus : int
 {
-    NotStarted,
-    InProgress,
-    Completed,
-    OnHold,
-    Cancelled
+    NotStarted = 1,
+    InProgress = 2,
+    Completed = 3,
+    OnHold = 4,
+    Cancelled = 5
 }
 

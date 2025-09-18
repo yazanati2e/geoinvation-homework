@@ -48,9 +48,9 @@ public class TasksService : ITasksService
 
     public async Task<Core.Entities.Task?> GetByIdAsync(int id)
     {
-        var record = await _tasksRepository.GetByIdAsync(id);
+        var record = await _tasksRepository.GetByIdAsync(id, "Tasks.AssignedTo");
 
-        if (record is null)
+        if (record is null || (!_activeUserService.IsUserInRole("Admin") && record.AssignedToId != _activeUserService.GetActiveUserId()))
         {
             return null;
         }

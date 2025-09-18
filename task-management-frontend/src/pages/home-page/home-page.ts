@@ -5,6 +5,7 @@ import { DataService } from './data-service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../common/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -15,6 +16,7 @@ import { AuthService } from '../../common/auth-service';
 export class HomePage {
   private snackBar: MatSnackBar;
   private dataSerivce: DataService;
+  private router: Router;
   authService: AuthService;
   usersDataSource: any[] = [];
   userdisplayedColumns = ['id', 'firstName', 'lastName', 'actions'];
@@ -27,6 +29,8 @@ export class HomePage {
     this.snackBar = inject(MatSnackBar);
     this.dataSerivce = inject(DataService);
     this.authService = inject(AuthService);
+    this.router = inject(Router);
+
     this.loadUsers();
     this.loadTasks();
   }
@@ -66,6 +70,10 @@ export class HomePage {
         this.snackBar.open(`Error deleting task: ${err.message}`, 'Close', { duration: 3000 });
       }
     });
+  }
+
+  editTask(id: number): void {
+    this.router.navigate([`/edit-task/${id}`]);
   }
 
   signout(): void {
