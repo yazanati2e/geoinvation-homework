@@ -21,7 +21,7 @@ export class LoginPage {
 
   loginForm = new FormGroup({
     userName: new FormControl('YAZAN.ATI@GENOVATION.AI', Validators.required),
-    password: new FormControl('P@ssw0rd1', Validators.required),
+    password: new FormControl('P@ssword1', Validators.required),
   });
 
   error: string | null = null;

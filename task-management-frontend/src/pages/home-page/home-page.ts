@@ -4,6 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { DataService } from './data-service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../common/auth-service';
 
 @Component({
   selector: 'app-home-page',
@@ -14,6 +15,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class HomePage {
   private snackBar: MatSnackBar;
   private dataSerivce: DataService;
+  authService: AuthService;
   usersDataSource: any[] = [];
   userdisplayedColumns = ['id', 'firstName', 'lastName', 'actions'];
 
@@ -24,6 +26,7 @@ export class HomePage {
   constructor() {
     this.snackBar = inject(MatSnackBar);
     this.dataSerivce = inject(DataService);
+    this.authService = inject(AuthService);
     this.loadUsers();
     this.loadTasks();
   }
@@ -63,5 +66,9 @@ export class HomePage {
         this.snackBar.open(`Error deleting task: ${err.message}`, 'Close', { duration: 3000 });
       }
     });
+  }
+
+  signout(): void {
+    this.authService.logout();
   }
 }

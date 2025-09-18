@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Environment } from '../environments/environment';
 import { Constants } from './contants';
 import { LoginModel } from './models/loginModel';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
     private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${Environment.apiUrl}/${Constants.AuthUrl}`, {username, password});
@@ -21,6 +22,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('jwt_token');
     this.isAuthenticatedSubject.next(false);
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
