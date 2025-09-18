@@ -24,7 +24,7 @@ namespace Genovationai.TaskManagement.Api.Controllers
             _userManager = userManager;
             _configuration = configuration;
         }
-
+        
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginDto model)

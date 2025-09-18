@@ -22,5 +22,15 @@ public class ActiveUserService : IActiveUserService
     {
         return _httpContextAccessor.HttpContext?.User?.FindAll("role")?.Select(r => r.Value).ToList() ?? new List<string>();
     }
+
+    public bool IsUserInRole(string roleName)
+    {
+        if(_httpContextAccessor.HttpContext is null)
+        {
+            return false;
+        }
+        
+        return _httpContextAccessor.HttpContext.User.IsInRole(roleName);
+    }
 }
 

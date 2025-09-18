@@ -30,9 +30,15 @@ public class Repository<TEnitity> : IRepository<TEnitity> where TEnitity : BaseE
         }
     }
 
-    public async Task<IEnumerable<TEnitity>> GetAllAsync()
+    public async Task<IEnumerable<TEnitity>> GetAllAsync(Func<TEnitity, bool>? filterCondition = null)
     {
-        return await _dbSet.ToListAsync();
+        if (filterCondition is null)
+        {
+            return await _dbSet.ToListAsync();
+        }
+
+
+        return _dbSet.Where(filterCondition).ToList();
     }
 
     public async Task<TEnitity?> GetByIdAsync(int id)

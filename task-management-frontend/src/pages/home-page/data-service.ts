@@ -13,5 +13,7 @@ export class DataService {
   getUsers() {
     return this.http.get<any[]>(`${Environment.apiUrl}/${Constants.GetAllUsersUrl}`);
   }
+
+  
   
 }

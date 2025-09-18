@@ -6,10 +6,12 @@ namespace Genovationai.TaskManagement.Api.Services;
 public class TasksService : ITasksService
 {
     private readonly IRepository<Core.Entities.Task> _tasksRepository;
+    private readonly IActiveUserService _activeUserService;
 
-    public TasksService(IRepository<Core.Entities.Task> tasksRepository)
+    public TasksService(IRepository<Core.Entities.Task> tasksRepository, IActiveUserService activeUserService)
     {
         _tasksRepository = tasksRepository;
+        _activeUserService = activeUserService;
     }
     public async Task<Core.Entities.Task> CreateAsync(Core.Entities.Task newTask)
     {
@@ -30,6 +32,18 @@ public class TasksService : ITasksService
         await _tasksRepository.Save();
 
         return true;
+    }
+
+    public async Task<IEnumerable<Core.Entities.Task>?> GetAllAsync()
+    {
+        if (_activeUserService.IsUserInRole("Admin"))
+        {
+            return await _tasksRepository.GetAllAsync();
+        }
+        else
+        {
+            return await _tasksRepository.GetAllAsync(t => t.AssignedToId == _activeUserService.GetActiveUserId());
+        }
     }
 
     public async Task<Core.Entities.Task?> GetByIdAsync(int id)

@@ -6,6 +6,8 @@ public interface ITasksService
 {
     public Task<Core.Entities.Task?> GetByIdAsync(int id);
 
+    public Task<IEnumerable<Core.Entities.Task>?> GetAllAsync();
+
     public Task<Core.Entities.Task> CreateAsync(Core.Entities.Task newTask);
 
     public Task<Core.Entities.Task?> UpdateTaskAsync(Core.Entities.Task TaskUpdate);

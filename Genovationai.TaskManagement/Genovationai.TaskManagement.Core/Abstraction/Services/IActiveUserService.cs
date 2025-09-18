@@ -15,5 +15,7 @@ public interface IActiveUserService
     /// </summary>
     /// <returns>Roles of the active user.</returns>
     List<string> GetActiveUserRoles();
+
+    bool IsUserInRole(string roleName);
 }
 
