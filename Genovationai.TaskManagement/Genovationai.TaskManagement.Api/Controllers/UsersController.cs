@@ -75,6 +75,7 @@ namespace Genovationai.TaskManagement.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             bool success = await _usersService.DeleteAsync(id);

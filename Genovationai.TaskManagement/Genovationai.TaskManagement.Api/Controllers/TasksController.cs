@@ -1,11 +1,13 @@
 ﻿using Genovationai.TaskManagement.Api.Dtos;
 using Genovationai.TaskManagement.Core.Abstraction.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Genovationai.TaskManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TasksController : ControllerBase
     {
         private readonly ITasksService _tasksService;
@@ -61,6 +63,7 @@ namespace Genovationai.TaskManagement.Api.Controllers
             return Ok(updatedRecord);
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _tasksService.DeleteAsync(id);

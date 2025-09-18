@@ -18,6 +18,14 @@ export class DataService {
     return this.http.get<any[]>(`${Environment.apiUrl}/${Constants.GetAllTasksUrl}`);
   }
 
+  deleteUser(id: number) {
+    return this.http.delete(`${Environment.apiUrl}/${Constants.DeleteUserUrl}/${id}`);
+  }
+
+  deleteTask(id: number) {
+    return this.http.delete(`${Environment.apiUrl}/${Constants.DeleteTaslUrl}/${id}`);
+  }
+
 
 
 }
