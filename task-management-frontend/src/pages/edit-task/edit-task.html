@@ -1,1 +1,41 @@
-<p>edit-task works!</p>
+<div class="container mt-3">
+    <form [formGroup]="taskFrm" (ngSubmit)="onSubmit()">
+
+        <div class="row">
+            <div class="form col-6">
+                <mat-form-field appearance="fill" class="form-control">
+                    <mat-label>Title</mat-label>
+                    <input matInput formControlName="title" required class="input-field"
+                        placeholder="Enter Title">
+                    @if(taskFrm.get('title')?.hasError('required'))
+                    {
+                    <mat-error>
+                        Title is <strong>required</strong>
+                    </mat-error>
+                    }
+                </mat-form-field>
+
+
+            </div>
+            <div class="form col-6">
+                <mat-form-field appearance="fill" class="form-control">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" required class="input-field"
+                        placeholder="Enter Description"></textarea>
+                    @if(taskFrm.get('description')?.hasError('required'))
+                    {
+                    <mat-error>
+                        Description is <strong>required</strong>
+                    </mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="button text-center">
+            <button type="submit" class="btn btn-primary gap-2" mat-button>Save</button>
+            <button type="button" class="btn btn-secondary" mat-button>Cancel</button>
+
+        </div>
+
+    </form>
+</div>

@@ -17,6 +17,6 @@ export class TasksService {
 
 
   getTaskById(id: number) {
-    return this.http.get<Task>(`http://${Environment.apiUrl}/${Constants.GetTaskByIdUrl}/${id}`);
+    return this.http.get<Task>(`${Environment.apiUrl}/${Constants.GetTaskByIdUrl}/${id}`);
   }
 }
