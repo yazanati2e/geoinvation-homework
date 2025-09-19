@@ -5,8 +5,7 @@
             <div class="form col-6">
                 <mat-form-field appearance="fill" class="form-control">
                     <mat-label>Title</mat-label>
-                    <input matInput formControlName="title" required class="input-field"
-                        placeholder="Enter Title">
+                    <input matInput formControlName="title" required class="input-field" placeholder="Enter Title">
                     @if(taskFrm.get('title')?.hasError('required'))
                     {
                     <mat-error>
@@ -20,20 +19,49 @@
             <div class="form col-6">
                 <mat-form-field appearance="fill" class="form-control">
                     <mat-label>Description</mat-label>
-                    <textarea matInput formControlName="description" required class="input-field"
+                    <textarea matInput formControlName="description" class="input-field"
                         placeholder="Enter Description"></textarea>
-                    @if(taskFrm.get('description')?.hasError('required'))
-                    {
-                    <mat-error>
-                        Description is <strong>required</strong>
-                    </mat-error>
-                    }
+
                 </mat-form-field>
             </div>
         </div>
+
+
+        <div class="row">
+            <div class="form col-6">
+                <mat-form-field class="form-control">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status" required>
+                        @for (s of TaskStatusValues; track $index)
+                        {
+                        <mat-option [value]="getTaskStatusEnum(s)">{{s}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+
+            </div>
+            <div class="form col-6">
+
+                <mat-form-field class="form-control">
+                    <mat-label>Assigned to</mat-label>
+                    <mat-select formControlName="AssignedTo" required [disabled]="!authService.isAdminUser()">
+                        @for (user of allUsers; track $index)
+                        {
+                        <mat-option [value]="user.id">{{user.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+
+
+            </div>
+        </div>
+
         <div class="button text-center">
-            <button type="submit" class="btn btn-primary gap-2" mat-button>Save</button>
-            <button type="button" class="btn btn-secondary" mat-button>Cancel</button>
+            <button type="button" class="btn btn-secondary m-2" mat-button (click)="onCacnel()">Cancel</button>
+            <button type="submit" class="btn btn-primary m-2" mat-button>Save</button>
+
 
         </div>
 
