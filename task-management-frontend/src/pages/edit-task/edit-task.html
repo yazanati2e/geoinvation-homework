@@ -45,12 +45,18 @@
 
                 <mat-form-field class="form-control">
                     <mat-label>Assigned to</mat-label>
-                    <mat-select formControlName="AssignedTo" required [disabled]="!authService.isAdminUser()">
+                    <mat-select formControlName="assignedTo" required>
                         @for (user of allUsers; track $index)
                         {
                         <mat-option [value]="user.id">{{user.name}}</mat-option>
                         }
                     </mat-select>
+                    @if(taskFrm.get('assignedTo')?.hasError('required'))
+                    {
+                    <mat-error>
+                        Assigned To is <strong>required</strong>
+                    </mat-error>
+                    }
                 </mat-form-field>
 
 

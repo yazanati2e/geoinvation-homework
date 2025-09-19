@@ -56,7 +56,7 @@ export class AuthService {
   getUserName(): string {
     if (this.hasToken()) {
       const decodedToken: any = jwtDecode(localStorage.getItem('jwt_token')!);
-      const name = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/name']; // Or other claim containing the user full name
+      const name = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/name'];
       return name;
     } 
 

@@ -48,8 +48,6 @@ export class EditTask {
       assignedTo: new FormControl(null, Validators.required)
     });
 
-    this.fetchTaskDetails(this.taskId);
-
     this.fetchAllUsers();
   }
 
@@ -57,7 +55,7 @@ export class EditTask {
   fetchTaskDetails(id: number) {
     this.tasksService.getTaskById(id).subscribe({
       next: (task: Task) => {
-        this.taskFrm.setValue({ title: task.title, description: task.description, status: task.status, assignedTo: task.assignedToId });
+        this.taskFrm.setValue({ title: task.title, description: task.description, status: task.status, assignedTo: task.assignedToId?.toString() });
       },
       error: (error) => {
         this.snackBar.open(`Error fetching the task: ${error.message}`, 'Close', { duration: 3000 });
@@ -70,12 +68,14 @@ export class EditTask {
 
     if(!this.authService.isAdminUser()){
       this.allUsers = [{id: this.authService.getCurrentUserId(), name: this.authService.getUserName()}];
+      this.fetchTaskDetails(this.taskId);
     }
     this.dataService.getUsers().subscribe({
       next: (users) => {
         for (let user of users) {
           this.allUsers.push({id: user.id, name: `${user.firstName} ${user.lastName}`});
         }
+        this.fetchTaskDetails(this.taskId);
       },
       error: (error) => {
         this.snackBar.open(`Error fetching users: ${error.message}`, 'Close', { duration: 3000 });
