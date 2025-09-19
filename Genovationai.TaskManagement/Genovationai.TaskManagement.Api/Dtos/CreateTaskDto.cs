@@ -1,10 +1,11 @@
-﻿using Genovationai.TaskManagement.Core.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Genovationai.TaskManagement.Api.Dtos;
 
 public class CreateTaskDto
 {
+    public int? Id { get; set; }
+
     [Required]
     public string Title { get; set; } = null!;
 

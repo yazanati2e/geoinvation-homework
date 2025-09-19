@@ -46,9 +46,21 @@ namespace Genovationai.TaskManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Core.Entities.Task taskDto)
+        public async Task<IActionResult> Post(CreateTaskDto taskDto)
         {
-            var addedTaskRecord = await _tasksService.CreateAsync(taskDto);
+            var taskRcord = new Core.Entities.Task() { AssignedToId = taskDto.AssignedToId, Description = taskDto.Description, Title = taskDto.Title, Status = taskDto.Status };
+
+            if(taskDto.Id.HasValue)
+            {
+                taskRcord.Id = taskDto.Id.Value;
+                var updatedRecord = await _tasksService.UpdateTaskAsync(taskRcord);
+                if (updatedRecord is null)
+                {
+                    return NotFound();
+                }
+                return Ok(updatedRecord);
+            }
+            var addedTaskRecord = await _tasksService.CreateAsync(taskRcord);
             return CreatedAtAction(nameof(Get), new { id = addedTaskRecord.Id }, addedTaskRecord);
         }
         [HttpPatch("{id:int}/status")]

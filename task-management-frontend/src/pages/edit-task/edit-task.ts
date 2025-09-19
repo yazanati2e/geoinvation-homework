@@ -92,7 +92,27 @@ export class EditTask {
   }
 
   onSubmit(): void {
+
+    if (this.taskFrm.valid) {
+      const updatedTask: Task = {
+        id: this.taskId,
+        title: this.taskFrm.value.title,
+        description: this.taskFrm.value.description,
+        status: this.taskFrm.value.status,
+        assignedToId: this.taskFrm.value.assignedTo
+      };
+
+      this.tasksService.updateTask(this.taskId, updatedTask).subscribe({
+        next: () => {
+          this.snackBar.open('Task updated successfully', 'Close', { duration: 3000 });
+          this.currentLocation.back();
+        },
+        error: (error) => {
+          this.snackBar.open(`Error updating the task: ${error.message}`, 'Close', { duration: 3000 });
+        }
+      });
   }
+}
 
   onCacnel(): void {
     this.currentLocation.back();

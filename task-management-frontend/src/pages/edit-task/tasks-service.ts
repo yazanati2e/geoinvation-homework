@@ -19,4 +19,12 @@ export class TasksService {
   getTaskById(id: number) {
     return this.http.get<Task>(`${Environment.apiUrl}/${Constants.GetTaskByIdUrl}/${id}`);
   }
+
+  updateTask(id: number | null, task: Task) {
+
+    if(id) {
+      task.id = id;
+    }
+    return this.http.post(`${Environment.apiUrl}/${Constants.CreateOrUpdateTaskUrl}`, task);
+  }
 }
